@@ -6,6 +6,7 @@ import pandas as pd
 from profile_scout.ml_logic.data import clean_data, get_data
 from profile_scout.ml_logic.model import run_kmeans, apply_cosine, merge_cosinedf
 from profile_scout.ml_logic.preprocessor import preprocess_features
+from profile_scout.ml_logic.column_selector import select_columns
 
 def main(player,number):
     df = get_data()
@@ -17,6 +18,7 @@ def main(player,number):
     df_with_cluster.set_index(df.index,inplace=True)
     recommandation_df = apply_cosine(df_with_cluster, player)
     final_df = merge_cosinedf(recommandation_df, df, player,number)
+    final_df=select_columns(final_df)
     return final_df
 
 if __name__ == '__main__':
