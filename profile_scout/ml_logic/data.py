@@ -3,28 +3,17 @@ import pandas as pd
 
 #from profile_scout.ml_logic.params import LOCAL_DATA_PATH
 
+from profile_scout.data_sources.online_storage import get_data_online
+from profile_scout.data_sources.local_disk import get_data_local
+
 def get_data(
-                     columns: list = None,
-                     verbose=True) -> pd.DataFrame:
-    """
-    return the raw dataset from local disk
-    """
-    path ='raw_data/Fifa23_data.csv'
+              verbose=False) -> pd.DataFrame:
+    if os.environ.get("DATA_SOURCE") == "online":
 
-    try:
-
-        df = pd.read_csv(
-                path)
-
-        if columns is not None:
-            df.columns = columns
-
-    except pd.errors.EmptyDataError:
-
-        return None  # end of data
-
+        df = get_data_online()
+        return df
+    df = get_data_local()
     return df
-
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """
