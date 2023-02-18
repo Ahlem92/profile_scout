@@ -9,10 +9,9 @@ from profile_scout.data_sources.local_disk import get_data_local
 def get_data(
               verbose=False) -> pd.DataFrame:
     if os.environ.get("DATA_SOURCE") == "online":
-
         df = get_data_online()
-        return df
-    df = get_data_local()
+    else:
+        df = get_data_local()
     return df
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
