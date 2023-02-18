@@ -17,7 +17,7 @@ def main(player,number):
     df.set_index("Full Name",inplace=True)
     df_with_cluster.set_index(df.index,inplace=True)
     recommandation_df = apply_cosine(df_with_cluster, player)
-    final_df = merge_cosinedf(recommandation_df, df, player,number)
+    final_df = merge_cosinedf(recommandation_df, df, player,(number+1))
     final_df=select_columns(final_df)
     return final_df
 
