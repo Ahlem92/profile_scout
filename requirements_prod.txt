@@ -1,0 +1,11 @@
+
+# data science
+numpy
+pandas
+scikit-learn
+
+# API
+google-cloud-storage
+fastapi
+pytz
+uvicorn
