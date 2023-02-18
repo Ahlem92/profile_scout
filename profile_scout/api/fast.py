@@ -20,7 +20,10 @@ app.add_middleware(
 @app.get("/get_profiles")
 def get_profiles(player_name: str,
             number_of_similar_profiles: int):
-
     df=get_similar_profiles(player_name,number_of_similar_profiles)
+    return df.to_dict()
 
-    return df
+
+@app.get("/")
+def root():
+    return dict(greeting="Hello")
