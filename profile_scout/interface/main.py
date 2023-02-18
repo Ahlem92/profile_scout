@@ -8,7 +8,7 @@ from profile_scout.ml_logic.model import run_kmeans, apply_cosine, merge_cosined
 from profile_scout.ml_logic.preprocessor import preprocess_features
 from profile_scout.ml_logic.column_selector import select_columns
 
-def main(player,number):
+def get_similar_profiles(player_name,number_of_similar_profiles):
     df = get_data()
     df2 = clean_data(df)
     data_processed = preprocess_features(df2)
@@ -16,14 +16,14 @@ def main(player,number):
     df.drop_duplicates(inplace=True)
     df.set_index("Full Name",inplace=True)
     df_with_cluster.set_index(df.index,inplace=True)
-    recommandation_df = apply_cosine(df_with_cluster, player)
-    final_df = merge_cosinedf(recommandation_df, df, player,(number+1))
+    recommandation_df = apply_cosine(df_with_cluster, player_name)
+    final_df = merge_cosinedf(recommandation_df, df, player_name,(number_of_similar_profiles+1))
     final_df=select_columns(final_df)
     return final_df
 
 if __name__ == '__main__':
     arg=sys.argv
-    player=arg[1]
-    number=int(arg[2])
-    final_df=main(player,number)
+    player_name=arg[1]
+    number_of_similar_profiles=int(arg[2])
+    final_df=get_similar_profiles(player_name,number_of_similar_profiles)
     print(final_df)
