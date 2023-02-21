@@ -1,5 +1,4 @@
-FROM python:3.8.12-buster
-
+FROM python:3.8.12-slim-buster
 
 COPY profile_scout /profile_scout
 COPY requirements_prod.txt /requirements.txt
