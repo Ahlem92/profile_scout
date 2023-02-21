@@ -56,3 +56,16 @@ pypi:
 
 run_api:
 	uvicorn profile_scout.api.fast:app --reload
+
+
+build_docker:
+	docker build -t ${GCR_MULTI_REGION}/${PROJECT}/${IMAGE} .
+
+push_docker:
+	docker push ${GCR_MULTI_REGION}/${PROJECT}/${IMAGE}
+
+run_docker:
+	docker run -e PORT=8000 -p 8000:8000 --env-file .env ${GCR_MULTI_REGION}/${PROJECT}/${IMAGE}
+
+deploy_docker:
+	gcloud run deploy --image ${GCR_MULTI_REGION}/${PROJECT}/${IMAGE} --memory ${MEMORY} --region ${REGION} --env-vars-file .env.yaml
