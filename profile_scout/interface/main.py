@@ -18,14 +18,34 @@ def load_model():
     df_with_cluster.set_index(df.index,inplace=True)
     return df_with_cluster
 
-def get_similar_profiles(player_name,number_of_similar_profiles):
+def get_similar_profiles(player_name,number_of_similar_profiles,**kwargs):
     df = get_data()
     df.drop_duplicates(inplace=True)
     df.set_index("Full Name",inplace=True)
     recommandation_df = apply_cosine(df_with_cluster, player_name)
-    final_df = merge_cosinedf(recommandation_df, df, player_name,(number_of_similar_profiles+1))
+    final_df = merge_cosinedf(recommandation_df, df, player_name)
+    final_df['Contract Until'].replace('-', '2023', inplace = True)
+    final_df['Contract Until'].replace('2022', '2023', inplace = True)
+    final_df['Contract Until']=final_df['Contract Until'].astype(int)
     final_df = select_columns(final_df)
-    return final_df
+    player=final_df.loc[player_name]
+    similar_profiles=final_df.drop(index=player_name)
+    if kwargs['age'] is not None:
+        similar_profiles=similar_profiles[similar_profiles['Age'] <= int(kwargs['age'])]
+    if kwargs['height'] is not None:
+        similar_profiles=similar_profiles[similar_profiles['Height(in cm)'] >= int(kwargs['height'])]
+    if kwargs['value_euro'] is not None:
+        similar_profiles=similar_profiles[similar_profiles['Value(in Euro)'] <= int(kwargs['value_euro'])]
+    if kwargs['contract_until'] is not None:
+        similar_profiles=similar_profiles[(similar_profiles['Contract Until']) <= int(kwargs['contract_until'])]
+    if kwargs['release_clause'] is not None:
+        similar_profiles=similar_profiles[(similar_profiles['Release Clause']) <= int(kwargs['release_clause'])]
+    if kwargs['nationality'] is not None:
+        similar_profiles=similar_profiles[(similar_profiles['Nationality']) == (kwargs['nationality'])]
+
+    similar_profiles=similar_profiles.head(number_of_similar_profiles)
+
+    return player, similar_profiles
 
 df_with_cluster = load_model()
 

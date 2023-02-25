@@ -19,9 +19,19 @@ app.add_middleware(
 
 @app.get("/get_profiles")
 def get_profiles(player_name: str,
-            number_of_similar_profiles: int):
-    df=get_similar_profiles(player_name,number_of_similar_profiles)
-    return df.to_dict()
+            number_of_similar_profiles: int,
+            age = None, height = None, value_euro = None, contract_until = None,
+            release_clause = None,
+            nationality= None):
+    player,similar_profiles=get_similar_profiles(player_name,
+                                                 number_of_similar_profiles,
+                                                 age = age,
+                                                 height = height,
+                                                 value_euro = value_euro,
+                                                 contract_until = contract_until,
+                                                 release_clause = release_clause,
+                                                 nationality = nationality)
+    return player.to_dict(),similar_profiles.to_dict()
 
 
 @app.get("/")

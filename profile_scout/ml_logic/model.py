@@ -20,8 +20,8 @@ def apply_cosine (data:pd.DataFrame, player_name = str):
     print("\n✅ cosine applied")
     return recommendation_df
 
-def merge_cosinedf (X:pd.DataFrame,df:pd.DataFrame,player_name= str,number_of_similar_profiles=int):
+def merge_cosinedf (X:pd.DataFrame,df:pd.DataFrame,player_name= str):
     results=pd.merge(X ,df,left_index=True, right_index=True).sort_values(by="Similar Players",ascending=False)
     bp=results.loc[player_name]["Best Position"]
     results=results[results["Best Position"]==bp]
-    return results.head(number_of_similar_profiles)
+    return results
